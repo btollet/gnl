@@ -27,9 +27,7 @@ t_fd_map	*new_fd_map(int fd)
 char	*get_content(t_fd_map *fd_map, const int fd)
 {
 	if (fd_map->fd == fd && fd_map->content != NULL)
-	{
 		return (fd_map->content);
-	}
 	while (fd_map->next != NULL)
 	{
 		fd_map = fd_map->next;
@@ -78,8 +76,6 @@ int get_next_line(const int fd, char **line)
 		fd_map = new_fd_map(fd);
 	}
 	save = get_content(fd_map, fd);
-	/*ft_putnbr(fd);
-	ft_putendl("");*/
 	if (save)
 	{
 		if (end_line(save, line, fd_map, fd) == 1)
@@ -94,24 +90,7 @@ int get_next_line(const int fd, char **line)
 	}
 	if (ret == -1)
 		return (-1);
-	ft_strcpy(*line, save);
-	free(save);
+	*line = ft_strsub(save, 0, ft_strlen(save));
+	//free(save);
 	return(0);
 }
-/*
-int		main()
-{
-	int		fd;
-	char	*str;
-	int		ret;
-
-	fd = open("get_next_line.h", O_RDONLY);
-	while ((ret =get_next_line(fd, &str)) == 1)
-	{
-		ft_putnbr(ret);
-		ft_putendl(str);
-		ft_putchar('\n');
-	}
-	ft_putnbr(ret);
-	return (0);
-}*/
