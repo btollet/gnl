@@ -72,7 +72,6 @@ int get_next_line(const int fd, char **line)
 		return (-1);
 	if (!fd_map)
 	{
-		ft_putendl("INIT");
 		fd_map = new_fd_map(fd);
 	}
 	save = get_content(fd_map, fd);
