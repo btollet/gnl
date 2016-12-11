@@ -3,28 +3,59 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: benjamin <benjamin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ccorcy <ccorcy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/06 18:20:35 by benjamin          #+#    #+#             */
-/*   Updated: 2016/12/08 17:00:50 by benjamin         ###   ########.fr       */
+/*   Created: 2016/12/09 14:24:37 by ccorcy            #+#    #+#             */
+/*   Updated: 2016/12/09 15:51:20 by ccorcy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	end_line(char *ret, char **line, char *before)
+t_fd_map	*new_fd_map(int fd)
 {
-	int i;
+	t_fd_map	*result;
+
+	if ((result = (t_fd_map *)malloc(sizeof(t_fd_map))) == NULL)
+		return (NULL);
+	result->content = ft_strnew(BUF_SIZE);
+	result->fd = fd;
+	result->next = NULL;
+	return (result);
+}
+
+char	*get_content(t_fd_map *fd_map, const int fd)
+{
+	if (fd_map->fd == fd && fd_map->content != NULL)
+	{
+		return (fd_map->content);
+	}
+	while (fd_map->next != NULL)
+	{
+		fd_map = fd_map->next;
+		if (fd_map->fd == fd)
+			return (fd_map->content);
+	}
+	fd_map->next = new_fd_map(fd);
+	fd_map = fd_map->next;
+	return (fd_map->content);
+}
+
+int		end_line(char *save, char **line, t_fd_map *fd_map, const int fd)
+{
+	int		i;
 
 	i = 0;
-	while (ret[i])
+	while (save[i])
 	{
-		if (ret[i] == '\n')
+		if (save[i] == '\n')
 		{
-			ret[i] = '\0';
-			line[0] = ret;
-			ret += i + 1;
-			before = ft_strcpy(before, ret);
+			save[i] = '\0';
+			*line = ft_strsub(save, 0, i);
+			save += i + 1;
+			while (fd_map->fd != fd)
+				fd_map = fd_map->next;
+			ft_strcpy(fd_map->content, save);
 			return (1);
 		}
 		i++;
@@ -34,33 +65,53 @@ int	end_line(char *ret, char **line, char *before)
 
 int get_next_line(const int fd, char **line)
 {
-	static char *before = NULL;
-	int			ret;
-	char		*buf;
-	char		*save;
+	static t_fd_map		*fd_map;
+	char				buf[BUF_SIZE + 1];
+	char				*save;
+	int					ret;
 
-	buf = ft_strnew(BUFF_SIZE);
-	save = ft_strnew(BUFF_SIZE);
-	if (before != NULL)
-	{
-		save = ft_strcpy(save, before);
-		if (end_line(save, line, before) == 1)
-			return (1);
-	}
-	before = ft_strnew(BUFF_SIZE);
 	if (fd < 0 || !line)
-	{
-		before = NULL;
 		return (-1);
-	}
-	while ((ret = read(fd, buf, BUFF_SIZE)) > 0)
+	if (!fd_map)
 	{
-		buf[ret] = '\0';
-		save = ft_strjoin(save, buf);
-		if (end_line(save, line, before) == 1)
+		ft_putendl("INIT");
+		fd_map = new_fd_map(fd);
+	}
+	save = get_content(fd_map, fd);
+	/*ft_putnbr(fd);
+	ft_putendl("");*/
+	if (save)
+	{
+		if (end_line(save, line, fd_map, fd) == 1)
 			return (1);
 	}
-	line[0] = save;
-	before = NULL;
-	return (0);
+	while ((ret = read(fd, &buf, BUF_SIZE)) > 0)
+	{
+		buf[ret] = 0;
+		save = ft_strjoin(save, buf);
+		if (end_line(save, line, fd_map, fd) == 1)
+			return (1);
+	}
+	if (ret == -1)
+		return (-1);
+	ft_strcpy(*line, save);
+	free(save);
+	return(0);
 }
+/*
+int		main()
+{
+	int		fd;
+	char	*str;
+	int		ret;
+
+	fd = open("get_next_line.h", O_RDONLY);
+	while ((ret =get_next_line(fd, &str)) == 1)
+	{
+		ft_putnbr(ret);
+		ft_putendl(str);
+		ft_putchar('\n');
+	}
+	ft_putnbr(ret);
+	return (0);
+}*/
