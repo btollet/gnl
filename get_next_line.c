@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccorcy <ccorcy@student.42.fr>              +#+  +:+       +#+        */
+/*   By: benjamin <benjamin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 14:24:37 by ccorcy            #+#    #+#             */
-/*   Updated: 2016/12/09 15:51:20 by ccorcy           ###   ########.fr       */
+/*   Updated: 2016/12/12 01:30:26 by benjamin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int		end_line(char *save, char **line, t_fd_map *fd_map, const int fd)
 			while (fd_map->fd != fd)
 				fd_map = fd_map->next;
 			ft_strcpy(fd_map->content, save);
+			//free(save);
 			return (1);
 		}
 		i++;
@@ -71,9 +72,7 @@ int get_next_line(const int fd, char **line)
 	if (fd < 0 || !line)
 		return (-1);
 	if (!fd_map)
-	{
 		fd_map = new_fd_map(fd);
-	}
 	save = get_content(fd_map, fd);
 	if (save)
 	{
@@ -90,6 +89,6 @@ int get_next_line(const int fd, char **line)
 	if (ret == -1)
 		return (-1);
 	*line = ft_strsub(save, 0, ft_strlen(save));
-	//free(save);
+	free(save);
 	return(0);
 }
