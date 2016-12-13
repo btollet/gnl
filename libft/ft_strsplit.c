@@ -22,7 +22,8 @@ char			**ft_strsplit(char const *s, char c)
 	start = 0;
 	if (!s)
 		return (NULL);
-	if ((result = (char **)malloc(sizeof(char *) * (ft_wordcount(s, c) + 1))) == NULL)
+	if ((result = (char **)malloc(sizeof(char *) *
+		(ft_wordcount(s, c) + 1))) == NULL)
 		return (NULL);
 	while (s[start] && s[start] == c)
 		start++;

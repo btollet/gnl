@@ -24,7 +24,7 @@ t_fd_map	*new_fd_map(int fd)
 	return (result);
 }
 
-char	*get_content(t_fd_map *fd_map, const int fd)
+char		*get_content(t_fd_map *fd_map, const int fd)
 {
 	if (fd_map->fd == fd && fd_map->content != NULL)
 		return (fd_map->content);
@@ -39,22 +39,23 @@ char	*get_content(t_fd_map *fd_map, const int fd)
 	return (fd_map->content);
 }
 
-int		end_line(char *save, char **line, t_fd_map *fd_map, const int fd)
+int			end_line(char **line, t_fd_map *fd_map, const int fd)
 {
+	char	*save;
 	int		i;
 
 	i = 0;
-	while (save[i])
+	while (line[0][i] != 0)
 	{
-		if (save[i] == '\n')
+		if (line[0][i] == '\n')
 		{
-			save[i] = '\0';
-			*line = ft_strsub(save, 0, i);
+			save = ft_strdup(line[0]);
+			line[0][i] = '\0';
+			line[0] = ft_strsub(line[0], 0, i);
 			save += i + 1;
 			while (fd_map->fd != fd)
 				fd_map = fd_map->next;
 			ft_strcpy(fd_map->content, save);
-			//free(save);
 			return (1);
 		}
 		i++;
@@ -62,33 +63,30 @@ int		end_line(char *save, char **line, t_fd_map *fd_map, const int fd)
 	return (0);
 }
 
-int get_next_line(const int fd, char **line)
+int			get_next_line(const int fd, char **line)
 {
 	static t_fd_map		*fd_map;
 	char				buf[BUF_SIZE + 1];
-	char				*save;
 	int					ret;
 
 	if (fd < 0 || !line)
 		return (-1);
 	if (!fd_map)
 		fd_map = new_fd_map(fd);
-	save = get_content(fd_map, fd);
-	if (save)
+	line[0] = get_content(fd_map, fd);
+	if (line[0])
 	{
-		if (end_line(save, line, fd_map, fd) == 1)
+		if (end_line(line, fd_map, fd) == 1)
 			return (1);
 	}
 	while ((ret = read(fd, &buf, BUF_SIZE)) > 0)
 	{
 		buf[ret] = 0;
-		save = ft_strjoin(save, buf);
-		if (end_line(save, line, fd_map, fd) == 1)
+		line[0] = ft_strjoin(line[0], buf);
+		if (end_line(line, fd_map, fd) == 1)
 			return (1);
 	}
 	if (ret == -1)
 		return (-1);
-	*line = ft_strsub(save, 0, ft_strlen(save));
-	free(save);
-	return(0);
+	return (0);
 }

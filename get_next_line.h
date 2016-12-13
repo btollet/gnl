@@ -13,7 +13,7 @@
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# define BUF_SIZE 1
+# define BUF_SIZE 10000
 
 # include "libft/libft.h"
 # include <stdlib.h>
@@ -26,6 +26,6 @@ typedef struct			s_fd_map
 	struct s_fd_map		*next;
 }						t_fd_map;
 
-int		get_next_line(const int fd, char **line);
+int						get_next_line(const int fd, char **line);
 
 #endif
