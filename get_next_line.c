@@ -39,7 +39,7 @@ char		*get_content(t_fd_map *fd_map, const int fd)
 	return (fd_map->content);
 }
 
-int			end_line(char **line, t_fd_map *fd_map, const int fd, int end)
+int			end_line(char **line, t_fd_map *fd_map, const int fd, int forced)
 {
 	char	*save;
 	char	*save_pos;
@@ -48,7 +48,7 @@ int			end_line(char **line, t_fd_map *fd_map, const int fd, int end)
 	i = 0;
 	while (line[0][i] != 0 && line[0][i] != '\n')
 		i++;
-	if (line[0][i] == '\n' || end == 1)
+	if (line[0][i] == '\n' || forced == 1)
 	{
 		save = ft_strdup(line[0]);
 		line[0][i] = '\0';
@@ -56,7 +56,7 @@ int			end_line(char **line, t_fd_map *fd_map, const int fd, int end)
 		save_pos = save;
 		save += i + 1;
 		while (fd_map->fd != fd)
-			fd_map = fd_map->next;		
+			fd_map = fd_map->next;
 		ft_strcpy(fd_map->content, save);
 		ft_strdel(&save_pos);
 		return (1);
@@ -85,9 +85,6 @@ int			get_next_line(const int fd, char **line)
 	if (ret == -1)
 		return (-1);
 	if (*line[0] != 0)
-	{
-		end_line(line, fd_map, fd, 1);
-		return (1);
-	}
+		return (end_line(line, fd_map, fd, 1));
 	return (0);
 }
