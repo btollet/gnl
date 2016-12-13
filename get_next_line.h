@@ -13,7 +13,7 @@
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# define BUF_SIZE 10000
+# define BUF_SIZE 1000000
 
 # include "libft/libft.h"
 # include <stdlib.h>
