@@ -24,6 +24,20 @@ t_fd_map	*new_fd_map(int fd)
 	return (result);
 }
 
+void		fd_map_free(int fd, t_fd_map *fd_map)
+{
+	t_fd_map	*save;
+
+	while (fd_map->fd != fd)
+	{
+		save = fd_map;
+		fd_map = fd_map->next;
+	}
+	//ft_strdel(&fd_map->content);
+	/*if (save)
+		save->next = fd_map->next;*/
+}
+
 char		*get_content(t_fd_map *fd_map, const int fd)
 {
 	if (fd_map->fd == fd && fd_map->content != NULL)
@@ -54,9 +68,9 @@ int			end_line(char **line, t_fd_map *fd_map, const int fd, int forced)
 		line[0][i] = '\0';
 		*line = ft_strsub(*line, 0, i);
 		save_pos = save;
-		save += i + 1;
 		while (fd_map->fd != fd)
 			fd_map = fd_map->next;
+		save += i + 1;
 		ft_strcpy(fd_map->content, save);
 		ft_strdel(&save_pos);
 		return (1);
@@ -86,5 +100,6 @@ int			get_next_line(const int fd, char **line)
 		return (-1);
 	if (*line[0] != 0)
 		return (end_line(line, fd_map, fd, 1));
+	fd_map_free(fd, fd_map);
 	return (0);
 }
