@@ -6,7 +6,7 @@
 /*   By: benjamin <benjamin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 14:24:37 by ccorcy            #+#    #+#             */
-/*   Updated: 2016/12/18 20:27:59 by benjamin         ###   ########.fr       */
+/*   Updated: 2016/12/18 20:30:13 by benjamin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char		*ft_strappend(char *line, char *buf)
 		return (NULL);
 	ft_strcpy(result, line);
 	ft_strcpy(result + len, buf);
-	//ft_memdel((void *)&line);
+	 /ft_memdel((void *)&line);
 	return (result);
 }
 
