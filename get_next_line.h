@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccorcy <ccorcy@student.42.fr>              +#+  +:+       +#+        */
+/*   By: benjamin <benjamin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 15:00:52 by ccorcy            #+#    #+#             */
-/*   Updated: 2016/12/09 15:20:05 by ccorcy           ###   ########.fr       */
+/*   Updated: 2016/12/18 13:20:32 by benjamin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# define BUF_SIZE 1000
+# define BUF_SIZE 1
 
 # include "libft/libft.h"
 # include <stdlib.h>

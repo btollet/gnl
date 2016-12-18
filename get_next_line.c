@@ -6,7 +6,7 @@
 /*   By: benjamin <benjamin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 14:24:37 by ccorcy            #+#    #+#             */
-/*   Updated: 2016/12/12 01:30:26 by benjamin         ###   ########.fr       */
+/*   Updated: 2016/12/18 12:59:42 by benjamin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,6 @@ t_fd_map	*new_fd_map(int fd)
 	result->fd = fd;
 	result->next = NULL;
 	return (result);
-}
-
-void		fd_map_free(int fd, t_fd_map *fd_map)
-{
-	t_fd_map	*save;
-
-	while (fd_map->fd != fd)
-	{
-		save = fd_map;
-		fd_map = fd_map->next;
-	}
-	//ft_strdel(&fd_map->content);
-	/*if (save)
-		save->next = fd_map->next;*/
 }
 
 char		*get_content(t_fd_map *fd_map, const int fd)
@@ -72,7 +58,7 @@ int			end_line(char **line, t_fd_map *fd_map, const int fd, int forced)
 			fd_map = fd_map->next;
 		save += i + 1;
 		ft_strcpy(fd_map->content, save);
-		ft_strdel(&save_pos);
+		ft_memdel((void *)&save_pos);
 		return (1);
 	}
 	return (0);
@@ -100,6 +86,5 @@ int			get_next_line(const int fd, char **line)
 		return (-1);
 	if (*line[0] != 0)
 		return (end_line(line, fd_map, fd, 1));
-	fd_map_free(fd, fd_map);
 	return (0);
 }
