@@ -6,11 +6,25 @@
 /*   By: benjamin <benjamin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 14:24:37 by ccorcy            #+#    #+#             */
-/*   Updated: 2016/12/18 12:59:42 by benjamin         ###   ########.fr       */
+/*   Updated: 2016/12/18 20:27:59 by benjamin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+char		*ft_strappend(char *line, char *buf)
+{
+	char	*result;
+	int		len;
+
+	len = (int)ft_strlen(line);
+	if ((result = (char *)malloc(sizeof(char) * len + BUF_SIZE + 2)) == NULL)
+		return (NULL);
+	ft_strcpy(result, line);
+	ft_strcpy(result + len, buf);
+	//ft_memdel((void *)&line);
+	return (result);
+}
 
 t_fd_map	*new_fd_map(int fd)
 {
@@ -58,7 +72,7 @@ int			end_line(char **line, t_fd_map *fd_map, const int fd, int forced)
 			fd_map = fd_map->next;
 		save += i + 1;
 		ft_strcpy(fd_map->content, save);
-		ft_memdel((void *)&save_pos);
+		//ft_memdel((void *)&save_pos);
 		return (1);
 	}
 	return (0);
@@ -68,17 +82,19 @@ int			get_next_line(const int fd, char **line)
 {
 	static t_fd_map		*fd_map;
 	char				buf[BUF_SIZE + 1];
+	char				*tmp;
 	int					ret;
 
 	if (fd < 0 || !line)
 		return (-1);
 	if (!fd_map)
 		fd_map = new_fd_map(fd);
-	*line = get_content(fd_map, fd);
+	*line = ft_strdup(get_content(fd_map, fd));
 	while ((ret = read(fd, &buf, BUF_SIZE)) > 0)
 	{
 		buf[ret] = 0;
-		*line = ft_strjoin(*line, buf);
+		tmp = *line;
+		*line = ft_strappend(tmp, buf);
 		if (end_line(line, fd_map, fd, 0) == 1)
 			return (1);
 	}
