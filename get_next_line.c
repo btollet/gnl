@@ -6,7 +6,7 @@
 /*   By: benjamin <benjamin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 12:25:42 by benjamin          #+#    #+#             */
-/*   Updated: 2017/01/07 13:56:37 by benjamin         ###   ########.fr       */
+/*   Updated: 2017/01/07 17:37:22 by benjamin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,24 +26,21 @@ char		*ft_strappend(char *Save, char *buf)
 	return (result);
 }
 
-int			end_line(char **line, char **Save, int fd)
+int			end_line(char **line, char *file, char **Save, int fd)
 {
 	char *tmp;
 
-	if ((tmp = ft_strchr(Save[fd], '\n')) != NULL)
-	{
+	if (!file[0])
+		return (0);
+	if ((tmp = ft_strchr(file, '\n')) != NULL)
 		*tmp = 0;
-		*line = ft_strdup(Save[fd]);
-		ft_memdel((void *)&Save[fd]);
+	*line = ft_strdup(file);
+	ft_memdel((void *)&file);
+	if (tmp)
 		Save[fd] = ft_strdup(tmp + 1);
-		tmp = NULL;
-		return (1);
-	}
 	else
-	{
-		*line = Save[fd];
-		Save[fd] = ft_strnew(0);
-	}
+		Save[fd] = NULL;
+	tmp = NULL;
 	return (1);
 }
 
@@ -51,20 +48,21 @@ int			get_next_line(const int fd, char **line)
 {
 	static char		*Save[MAX_FD];
 	char			buf[BUF_SIZE + 1];
+	char			*file;
 	int				ret;
 
 	if (fd < 0 || !line)
 		return (-1);
 	if (Save[fd] == NULL)
-		Save[fd] = ft_strnew(0);
+		file = ft_strnew(0);
+	else
+		return (end_line(line, Save[fd], Save, fd));
 	while ((ret = read(fd, &buf, BUF_SIZE)) > 0)
 	{
 		buf[ret] = 0;
-		Save[fd] = ft_strappend(Save[fd], buf);
+		file = ft_strappend(file, buf);
 	}
 	if (ret == -1)
 		return (-1);
-	if (Save[fd][0] != 0)
-		return (end_line(line, Save, fd));
-	return (0);
+	return (end_line(line, file, Save, fd));
 }

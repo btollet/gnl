@@ -6,14 +6,14 @@
 /*   By: benjamin <benjamin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 15:00:52 by ccorcy            #+#    #+#             */
-/*   Updated: 2017/01/07 13:50:45 by benjamin         ###   ########.fr       */
+/*   Updated: 2017/01/07 17:18:32 by benjamin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# define BUF_SIZE 1
+# define BUF_SIZE 10000
 # define MAX_FD 5000
 
 # include "libft/libft.h"
