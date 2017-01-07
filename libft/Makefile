@@ -6,7 +6,7 @@
 #    By: benjamin <benjamin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/18 13:08:36 by benjamin          #+#    #+#              #
-#    Updated: 2016/11/18 13:10:23 by benjamin         ###   ########.fr        #
+#    Updated: 2016/12/23 17:53:19 by benjamin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,8 +25,6 @@ ft_isxdigit.c   ft_memcpy.c     ft_strchr.c     ft_strmapi.c    ft_toupper.c \
 ft_itoa.c       ft_memdel.c     ft_strclr.c     ft_strncat.c    ft_strstr.c \
 ft_lstadd.c     ft_memmove.c    ft_strcmp.c     ft_strncmp.c    ft_wordlen.c \
 ft_lstdel.c     ft_memset.c     ft_strcpy.c     ft_strncpy.c    ft_strnequ.c \
-
-HEADERS = *.h
 
 OBJ = $(SRCS:%.c=%.o)
 
