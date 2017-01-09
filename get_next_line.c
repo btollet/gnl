@@ -6,7 +6,7 @@
 /*   By: benjamin <benjamin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 12:25:42 by benjamin          #+#    #+#             */
-/*   Updated: 2017/01/09 01:09:09 by benjamin         ###   ########.fr       */
+/*   Updated: 2017/01/09 14:14:41 by benjamin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char		*ft_strappend(char *file, char *buf)
 
 int			end_line(char **line, char *file, char **save, int fd)
 {
-	char *tmp;
+	char	*tmp;
 
 	if (!file[0])
 		return (0);

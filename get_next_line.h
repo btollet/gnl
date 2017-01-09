@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: benjamin <benjamin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/09 15:00:52 by ccorcy            #+#    #+#             */
-/*   Updated: 2017/01/09 01:09:23 by benjamin         ###   ########.fr       */
+/*   Created: 2016/12/09 15:00:52 by benjamin          #+#    #+#             */
+/*   Updated: 2017/01/09 14:10:20 by benjamin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,6 @@
 # include <stdlib.h>
 # include <fcntl.h>
 
-int						get_next_line(const int fd, char **line);
+int		get_next_line(const int fd, char **line);
 
 #endif
