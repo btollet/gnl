@@ -6,7 +6,7 @@
 /*   By: benjamin <benjamin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 12:25:42 by benjamin          #+#    #+#             */
-/*   Updated: 2017/01/09 14:14:41 by benjamin         ###   ########.fr       */
+/*   Updated: 2017/01/09 16:22:07 by btollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char		*ft_strappend(char *file, char *buf)
 {
 	char	*result;
-	
+
 	result = ft_strjoin(file, buf);
 	ft_memdel((void *)&file);
 	return (result);
@@ -26,12 +26,15 @@ int			end_line(char **line, char *file, char **save, int fd)
 	char	*tmp;
 
 	if (!file[0])
+	{
+		*line = NULL;
 		return (0);
+	}
 	if ((tmp = ft_strchr(file, '\n')) != NULL)
 		*tmp = 0;
 	*line = ft_strdup(file);
 	if (tmp)
-		 save[fd] = ft_strdup(tmp + 1);
+		save[fd] = ft_strdup(tmp + 1);
 	else
 		save[fd] = NULL;
 	ft_memdel((void *)&file);
@@ -41,18 +44,18 @@ int			end_line(char **line, char *file, char **save, int fd)
 
 int			get_next_line(const int fd, char **line)
 {
-	static char		*save[MAX_FD];
-	char			buf[BUF_SIZE + 1];
+	static char		*save[5000];
+	char			buf[BUFF_SIZE + 1];
 	char			*file;
 	int				ret;
 
-	if (fd < 0 || !line)
+	if (fd < 0 || fd > 5000 || BUFF_SIZE <= 0 || !line)
 		return (-1);
 	if (save[fd] != NULL)
 		file = save[fd];
 	else
 		file = ft_strnew(0);
-	while ((ret = read(fd, &buf, BUF_SIZE)) > 0)
+	while ((ret = read(fd, &buf, BUFF_SIZE)) > 0)
 	{
 		buf[ret] = 0;
 		file = ft_strappend(file, buf);
